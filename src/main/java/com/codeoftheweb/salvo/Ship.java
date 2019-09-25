@@ -3,7 +3,8 @@ package com.codeoftheweb.salvo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Ship {
@@ -11,7 +12,7 @@ public class Ship {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
-
+    public String type;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="gamePlayer_id")
@@ -21,14 +22,44 @@ public class Ship {
         return gamePlayer;
     }
 
-    @OneToMany(mappedBy="ship", fetch=FetchType.EAGER)
-    Set<ShipLocations> shipLocations;
+    @ElementCollection
+    @Column(name="shipLocations")
+    private List<String> shipLocations = new ArrayList<>();
 
-    public Set<ShipLocations> getShipLocations() {
+    public List<String> getShipLocations() {
         return shipLocations;
     }
 
     public long getId() {
         return id;
     }
+
+    public Ship() {
+    }
+
+    public Ship(GamePlayer gamePlayer, String type, List<String> shipLocation) {
+        this.gamePlayer = gamePlayer;
+        this.type=type;
+        this.shipLocations = shipLocation;
+    }
+
+    public Ship(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+
+
+
+    public Map<String, Object> makeShipDTO() {
+        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        dto.put("type", this.getType());
+        dto.put("locations", this.getShipLocations());
+        return dto;
+    }
+
+
 }

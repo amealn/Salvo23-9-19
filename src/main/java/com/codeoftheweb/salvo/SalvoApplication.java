@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @SpringBootApplication
 public class SalvoApplication {
@@ -15,7 +16,10 @@ public class SalvoApplication {
 		SpringApplication.run(SalvoApplication.class, args);}
 
 		@Bean
-		public CommandLineRunner initData(PlayerRepository playerRepository,GameRepository gameRepository,GamePlayerRepository gamePlayerRepository){
+		public CommandLineRunner initData(PlayerRepository playerRepository,
+										  GameRepository gameRepository,
+										  GamePlayerRepository gamePlayerRepository,
+										  ShipRepository shipRepository){
 			return(args) ->{
 
 				Player p1 = new Player("j.bauer@ctu.gov");
@@ -52,6 +56,14 @@ public class SalvoApplication {
 				GamePlayer gp13= new GamePlayer(date,p3,g8);
 				GamePlayer gp14= new GamePlayer(date,p4,g8);
 				gamePlayerRepository.saveAll(Arrays.asList(gp1, gp2, gp3,gp4,gp5,gp6,gp7,gp8,gp9,gp10,gp11,gp12,gp13,gp14));
+
+				Ship s1=new Ship(gp1,"Destroyer", Arrays.asList("H2", "H3", "H4"));
+				Ship s2=new Ship(gp1,"Submarine", Arrays.asList("E1", "F1", "G1"));
+				Ship s3=new Ship(gp1,"Patrol Boat", Arrays.asList("B4", "B5"));
+				Ship s4=new Ship(gp2,"Destroyer", Arrays.asList("B5", "C5", "D5"));
+				Ship s5=new Ship(gp2,"Patrol Boat", Arrays.asList("F1", "F2"));
+				shipRepository.saveAll(Arrays.asList(s1,s2,s3,s4,s5));
+
 			};
 
 
