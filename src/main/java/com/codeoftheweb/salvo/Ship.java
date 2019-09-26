@@ -24,9 +24,9 @@ public class Ship {
 
     @ElementCollection
     @Column(name="shipLocations")
-    private List<String> shipLocations = new ArrayList<>();
+    private Set<String> shipLocations = new LinkedHashSet<>();
 
-    public List<String> getShipLocations() {
+    public Set<String> getShipLocations() {
         return shipLocations;
     }
 
@@ -37,7 +37,7 @@ public class Ship {
     public Ship() {
     }
 
-    public Ship(GamePlayer gamePlayer, String type, List<String> shipLocation) {
+    public Ship(GamePlayer gamePlayer, String type, Set<String> shipLocation) {
         this.gamePlayer = gamePlayer;
         this.type=type;
         this.shipLocations = shipLocation;
@@ -60,6 +60,9 @@ public class Ship {
         dto.put("locations", this.getShipLocations());
         return dto;
     }
+
+
+
 
 
 }

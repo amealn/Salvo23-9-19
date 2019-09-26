@@ -45,7 +45,6 @@ public class Game {
         dto.put("id", this.getId());
         dto.put("creationDate", this.getCreationDate());
         dto.put("gamePlayers", getAllGamePlayers(getGamePlayers()));
-        dto.put("ships", );
         return dto;
     }
     public List<Map<String, Object>> getAllGamePlayers(Set<GamePlayer> gamePlayers) {
@@ -54,6 +53,10 @@ public class Game {
                 .map(gamePlayer -> gamePlayer.makeGamePlayersDTO())
                 .collect(Collectors.toList());
     }
+
+
+
+
 
 
 
