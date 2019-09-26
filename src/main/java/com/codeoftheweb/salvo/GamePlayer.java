@@ -83,6 +83,13 @@ public class GamePlayer {
                 .collect(Collectors.toList());
     }
 
+    @OneToMany(mappedBy="gamePlayer", fetch=FetchType.EAGER)
+    Set<Salvo> salvoes;
+
+    public Set<Salvo> getSalvoes() {
+        return salvoes;
+    }
+
 
 
 }

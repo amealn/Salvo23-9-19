@@ -22,7 +22,8 @@ public class SalvoApplication {
 		public CommandLineRunner initData(PlayerRepository playerRepository,
 										  GameRepository gameRepository,
 										  GamePlayerRepository gamePlayerRepository,
-										  ShipRepository shipRepository){
+										  ShipRepository shipRepository,
+										  SalvoRepository salvoRepository){
 			return(args) ->{
 
 				Player p1 = new Player("j.bauer@ctu.gov");
@@ -90,6 +91,20 @@ public class SalvoApplication {
 				shipRepository.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6, s7, s8,
 						s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21,
 						s22, s23, s24, s25, s26, s27));
+
+				Salvo sa1 = new Salvo(1, gp1, new HashSet<>(Arrays.asList("B4","B5","B6")));
+				Salvo sa2 = new Salvo(2, gp2, new HashSet<>(Arrays.asList("E1","H3","A2")));
+				Salvo sa3 = new Salvo(1, gp2, new HashSet<>(Arrays.asList("B5","D5","C7")));
+				Salvo sa4 = new Salvo(2, gp2, new HashSet<>(Arrays.asList("C5","C6")));
+				Salvo sa5 = new Salvo(1, gp2, new HashSet<>(Arrays.asList("H1","H2","H3")));
+				Salvo sa6 = new Salvo(2, gp2, new HashSet<>(Arrays.asList("E1","F2","G3")));
+				Salvo sa7 = new Salvo(1, gp2, new HashSet<>(Arrays.asList("B5","C6","H1")));
+				Salvo sa8 = new Salvo(2, gp2, new HashSet<>(Arrays.asList("C5","C7","D5")));
+				Salvo sa9 = new Salvo(1, gp2, new HashSet<>(Arrays.asList("B5","B6","C7")));
+				Salvo sa10= new Salvo(2, gp2, new HashSet<>(Arrays.asList("C6","D5","E6")));
+				Salvo sa11= new Salvo(3, gp2, new HashSet<>(Arrays.asList("H1","H8")));
+				salvoRepository.saveAll(Arrays.asList(sa1, sa2, sa3, sa4, sa5, sa6, sa7, sa8,
+						sa9, sa10, sa11));
 
 			};
 
