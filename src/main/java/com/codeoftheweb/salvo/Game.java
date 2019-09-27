@@ -12,8 +12,8 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    private long id;
-    private Date creationDate;
+    public long id;
+    public Date creationDate;
 
 
     public Game() {}
@@ -51,6 +51,14 @@ public class Game {
         return gamePlayers
                 .stream()
                 .map(gamePlayer -> gamePlayer.makeGamePlayersDTO())
+                .collect(Collectors.toList());
+    }
+
+    public List<Object> getAllSalvoes(){
+        return this.getGamePlayers()
+                .stream()
+                .flatMap(gamePlayer -> gamePlayer.getSalvoes().stream())
+                .map(salvo -> salvo.makeSalvoDTO())
                 .collect(Collectors.toList());
     }
 

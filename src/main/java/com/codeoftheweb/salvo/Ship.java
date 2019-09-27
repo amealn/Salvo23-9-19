@@ -11,12 +11,12 @@ public class Ship {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    private long id;
+    public long id;
     public String type;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="gamePlayer_id")
-    private GamePlayer gamePlayer;
+    public GamePlayer gamePlayer;
 
     public GamePlayer getGamePlayer(){
         return gamePlayer;

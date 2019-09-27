@@ -12,8 +12,8 @@ public class GamePlayer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    private long id;
-    private Date joinDate;
+    public long id;
+    public Date joinDate;
 
     public GamePlayer(Date joinDate){
         this.joinDate = joinDate;
@@ -25,7 +25,7 @@ public class GamePlayer {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="player_id")
-    private Player player;
+    public Player player;
 
     public Player getPlayer(){
         return player;
@@ -33,7 +33,7 @@ public class GamePlayer {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="game_id")
-    private Game game;
+    public Game game;
 
 
     public Game getGame(){
@@ -73,6 +73,7 @@ public class GamePlayer {
         dto.put("creationDate", this.game.getCreationDate());
         dto.put("gamePlayers", this.game.getAllGamePlayers(this.game.getGamePlayers()));
         dto.put("ships", getAllShips());
+        dto.put("salvoes", getGame().getAllSalvoes());
         return dto;
     }
 
@@ -89,6 +90,11 @@ public class GamePlayer {
     public Set<Salvo> getSalvoes() {
         return salvoes;
     }
+
+
+
+
+
 
 
 
