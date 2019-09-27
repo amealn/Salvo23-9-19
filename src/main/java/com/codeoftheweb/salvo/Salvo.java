@@ -50,15 +50,11 @@ public class Salvo {
     public Map<String, Object> makeSalvoDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("turn", this.getTurn());
-        dto.put("player", makePlayer2DTO());
+        dto.put("player", this.getGamePlayer().getPlayer().getId());
+        dto.put("salvoLocations", getSalvoLocations());
         return dto;
     }
-    public Map<String, Object> makePlayer2DTO() {
-        Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("id", getGamePlayer().getPlayer().getId());
-        dto.put("locations", getSalvoLocations());
-        return dto;
-    }
+
 
 
 }
