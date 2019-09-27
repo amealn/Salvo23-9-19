@@ -45,6 +45,13 @@ public class Player {
         gamePlayers.add(gamePlayer);
     }
 
+    @OneToMany(mappedBy="player", fetch=FetchType.EAGER)
+    Set<Score> scores;
+
+    public Set<Score> getScores() {
+        return scores;
+    }
+
     public Map<String, Object> makePlayerDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", this.getId());
