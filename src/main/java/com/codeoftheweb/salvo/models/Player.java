@@ -1,4 +1,4 @@
-package com.codeoftheweb.salvo;
+package com.codeoftheweb.salvo.models;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -58,6 +58,8 @@ public class Player {
         dto.put("email", this.getUserName());
         return dto;
     }
+
+
 
 
 

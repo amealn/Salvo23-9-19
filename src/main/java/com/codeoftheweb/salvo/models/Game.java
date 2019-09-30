@@ -1,9 +1,8 @@
-package com.codeoftheweb.salvo;
+package com.codeoftheweb.salvo.models;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,8 +50,13 @@ public class Game {
         dto.put("id", this.getId());
         dto.put("creationDate", this.getCreationDate());
         dto.put("gamePlayers", getAllGamePlayers(getGamePlayers()));
+        dto.put("scores", getAllScores(getScores()));
         return dto;
     }
+
+    //.stream.map. gameplayer -> gameplayer.getscores if {scores.isEmpty() return null;}.collect//
+
+
     public List<Map<String, Object>> getAllGamePlayers(Set<GamePlayer> gamePlayers) {
         return gamePlayers
                 .stream()
@@ -68,12 +72,11 @@ public class Game {
                 .collect(Collectors.toList());
     }
 
-
-
-
-
-
-
-
+    public List<Map<String, Object>> getAllScores(Set<Score> scores) {
+        return scores
+                .stream()
+                .map(score -> score.makeScoreDTO())
+                .collect(Collectors.toList());
+    }
 
 }

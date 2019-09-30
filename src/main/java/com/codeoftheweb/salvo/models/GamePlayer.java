@@ -1,6 +1,5 @@
-package com.codeoftheweb.salvo;
+package com.codeoftheweb.salvo.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -90,12 +89,6 @@ public class GamePlayer {
     public Set<Salvo> getSalvoes() {
         return salvoes;
     }
-
-
-
-
-
-
 
 
 }

@@ -1,17 +1,15 @@
-package com.codeoftheweb.salvo;
+package com.codeoftheweb.salvo.controllers;
 
 
+import com.codeoftheweb.salvo.repositories.GamePlayerRepository;
+import com.codeoftheweb.salvo.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
-import java.lang.reflect.MalformedParameterizedTypeException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
