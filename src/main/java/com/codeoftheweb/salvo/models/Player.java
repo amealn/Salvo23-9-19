@@ -59,6 +59,18 @@ public class Player {
         return dto;
     }
 
+    /*public Map<String, Object> makePlayerLeaderboardDTO() {
+        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        dto.put("player", this.getUserName());
+        dto.put("total", getMakeLeaderboardDTO());
+        dto.put("number of wins", getMakeLeaderboardDTO());
+        dto.put("number of ties", getMakeLeaderboardDTO());
+        dto.put("number of loses", getMakeLeaderboardDTO());
+
+        return dto;
+    }*/
+
+
 
 
 

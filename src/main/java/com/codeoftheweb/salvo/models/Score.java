@@ -12,7 +12,7 @@ public class Score {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    public long id;
+    private long id;
     public Date finishDate;
     public double score;
 
@@ -51,7 +51,8 @@ public class Score {
     public Map<String, Object> makeScoreDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("player", getPlayer().getId());
-        dto.put("scores", getScore());
+        dto.put("score", getScore());
+        dto.put("finishDate", getFinishDate());
         return dto;
     }
 

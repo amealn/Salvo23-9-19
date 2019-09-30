@@ -11,7 +11,7 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    public long id;
+    private long id;
     public Date creationDate;
 
 
@@ -50,12 +50,9 @@ public class Game {
         dto.put("id", this.getId());
         dto.put("creationDate", this.getCreationDate());
         dto.put("gamePlayers", getAllGamePlayers(getGamePlayers()));
-        dto.put("scores", getAllScores(getScores()));
+        dto.put("score", getAllScores());
         return dto;
     }
-
-    //.stream.map. gameplayer -> gameplayer.getscores if {scores.isEmpty() return null;}.collect//
-
 
     public List<Map<String, Object>> getAllGamePlayers(Set<GamePlayer> gamePlayers) {
         return gamePlayers
@@ -72,11 +69,14 @@ public class Game {
                 .collect(Collectors.toList());
     }
 
-    public List<Map<String, Object>> getAllScores(Set<Score> scores) {
-        return scores
+    public List<Map<String, Object>> getAllScores() {
+        if(!scores.isEmpty()){
+        return this.scores
                 .stream()
                 .map(score -> score.makeScoreDTO())
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());}
+        else {return null;}
     }
+
 
 }

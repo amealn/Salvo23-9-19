@@ -124,7 +124,7 @@ public class SalvoApplication {
 				Score sc4 = new Score(g2, p2, 0.5, date);
 				Score sc5 = new Score(g3, p2, 1, date);
 				Score sc6 = new Score(g3, p4, 0, date);
-				Score sc7 = new Score(g4, p4, 0.5, date);
+				Score sc7 = new Score(g4, p2, 0.5, date);
 				Score sc8 = new Score(g4, p1, 0.5, date);
 				scoreRepository.saveAll(Arrays.asList(sc1, sc2, sc3, sc4, sc5, sc6, sc7, sc8));
 
