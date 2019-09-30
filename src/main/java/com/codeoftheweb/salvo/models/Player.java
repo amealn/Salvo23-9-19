@@ -59,21 +59,30 @@ public class Player {
         return dto;
     }
 
-    /*public Map<String, Object> makePlayerLeaderboardDTO() {
+    public Map<String, Object> makePlayerLeaderboardDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("player", this.getUserName());
-        dto.put("total", getMakeLeaderboardDTO());
-        dto.put("number of wins", getMakeLeaderboardDTO());
-        dto.put("number of ties", getMakeLeaderboardDTO());
-        dto.put("number of loses", getMakeLeaderboardDTO());
-
+        Map<String, Object> score = new LinkedHashMap<String, Object>();
+        dto.put("id", this.getId());
+        dto.put("email", this.getUserName());
+        dto.put("score", score);
+        score.put("total", this.getTotalScore());
+        score.put("won", this.getWinScore());
+        score.put("lost", this.getLostScore());
+        score.put("tied", this.getTiedScore());
         return dto;
-    }*/
+    }
 
+    public Double getTotalScore(){return this.getWinScore() * 1.0D + this.getTiedScore()*0.5D;}
 
-
-
-
+    public long getWinScore(){
+        return this.getScores().stream().filter(score -> score.getScore() == 1.0D).count();
+    }
+    public long getLostScore(){
+        return this.getScores().stream().filter(score -> score.getScore() == 0.0D).count();
+    }
+    public long getTiedScore(){
+        return this.getScores().stream().filter(score -> score.getScore() == 0.5D).count();
+    }
 
 }
 

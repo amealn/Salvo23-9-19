@@ -39,7 +39,7 @@ public class SalvoController {
                 .makeGame2DTO();
     }
 
-    /*@Autowired
+    @Autowired
     private PlayerRepository playerRepository;
 
     @RequestMapping("/leaderBoard")
@@ -48,6 +48,6 @@ public class SalvoController {
                 .stream()
                 .map(player -> player.makePlayerLeaderboardDTO())
                 .collect(Collectors.toList());
-    }*/
+    }
 
 }

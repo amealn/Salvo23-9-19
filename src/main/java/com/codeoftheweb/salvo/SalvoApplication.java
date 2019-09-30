@@ -32,8 +32,7 @@ public class SalvoApplication {
 				Player p2 = new Player("c.obrian@ctu.gov");
 				Player p3 = new Player("kim_bauer@gmail.com");
 				Player p4 = new Player("t.almeida@ctu.gov");
-				Player p5 = new Player("d.palmer@whitehouse.gov");
-				playerRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+				playerRepository.saveAll(Arrays.asList(p1,p2,p3,p4));
 
                 Date date = new Date();
 

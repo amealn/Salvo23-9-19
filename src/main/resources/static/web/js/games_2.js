@@ -23,7 +23,7 @@ function updateViewLBoard(data) {
 function loadData() {
   $.get("/api/games")
     .done(function(data) {
-      updateViewGames(data.games);
+      updateViewGames(data);
     })
     .fail(function( jqXHR, textStatus ) {
       alert( "Failed: " + textStatus );
