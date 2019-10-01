@@ -14,6 +14,30 @@ public class GamePlayer {
     private long id;
     public Date joinDate;
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public void setShips(Set<Ship> ships) {
+        this.ships = ships;
+    }
+
+    public void setSalvoes(Set<Salvo> salvoes) {
+        this.salvoes = salvoes;
+    }
+
     public GamePlayer(Date joinDate){
         this.joinDate = joinDate;
     }
@@ -60,12 +84,14 @@ public class GamePlayer {
         return ships;
     }
 
+    //DTO para /games
     public Map<String, Object> makeGamePlayersDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", this.getId());
         dto.put("player", getPlayer().makePlayerDTO());
         return dto;
     }
+    //DTO para Game_view/n
     public Map<String, Object> makeGame2DTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", this.game.getId());
@@ -75,7 +101,7 @@ public class GamePlayer {
         dto.put("salvoes", getGame().getAllSalvoes());
         return dto;
     }
-
+    //Lista para game_view/n
     public List<Map<String, Object>> getAllShips() {
         return ships
                 .stream()

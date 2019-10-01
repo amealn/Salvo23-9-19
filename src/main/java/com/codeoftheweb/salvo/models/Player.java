@@ -15,13 +15,19 @@ public class Player {
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
     private String userName;
+    private String password;
 
     //constructor
     public Player() {
     }
 
-    public Player(String userName) {
+    public Player(String userName, String password) {
 
+        this.userName = userName;
+        this.password = password;
+    }
+
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
@@ -31,6 +37,14 @@ public class Player {
 
     public String getUserName() {
         return userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @OneToMany(mappedBy="player", fetch=FetchType.EAGER)
@@ -52,6 +66,19 @@ public class Player {
         return scores;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setGamePlayers(Set<GamePlayer> gamePlayers) {
+        this.gamePlayers = gamePlayers;
+    }
+
+    public void setScores(Set<Score> scores) {
+        this.scores = scores;
+    }
+
+    //DTO para /games
     public Map<String, Object> makePlayerDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", this.getId());
@@ -59,16 +86,17 @@ public class Player {
         return dto;
     }
 
+    //DTO para /leaderBoard
     public Map<String, Object> makePlayerLeaderboardDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         Map<String, Object> score = new LinkedHashMap<String, Object>();
         dto.put("id", this.getId());
         dto.put("email", this.getUserName());
         dto.put("score", score);
-        score.put("total", this.getTotalScore());
-        score.put("won", this.getWinScore());
-        score.put("lost", this.getLostScore());
-        score.put("tied", this.getTiedScore());
+          score.put("total", this.getTotalScore());
+          score.put("won", this.getWinScore());
+          score.put("lost", this.getLostScore());
+          score.put("tied", this.getTiedScore());
         return dto;
     }
 

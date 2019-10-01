@@ -13,6 +13,22 @@ public class Salvo {
     private long id;
     public int turn;
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    public void setGamePlayer(GamePlayer gamePlayer) {
+        this.gamePlayer = gamePlayer;
+    }
+
+    public void setSalvoLocations(Set<String> salvoLocations) {
+        this.salvoLocations = salvoLocations;
+    }
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="gamePlayer_id")
     public GamePlayer gamePlayer;
@@ -45,7 +61,7 @@ public class Salvo {
         this.gamePlayer = gamePlayer;
         this.salvoLocations = salvoLocations;
     }
-
+    //DTO para Game_view/n
     public Map<String, Object> makeSalvoDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("turn", this.getTurn());

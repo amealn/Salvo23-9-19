@@ -14,6 +14,21 @@ public class Game {
     private long id;
     public Date creationDate;
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setGamePlayers(Set<GamePlayer> gamePlayers) {
+        this.gamePlayers = gamePlayers;
+    }
+
+    public void setScores(Set<Score> scores) {
+        this.scores = scores;
+    }
 
     public Game() {}
 
@@ -45,6 +60,7 @@ public class Game {
         return scores;
     }
 
+    //DTO para /games
     public Map<String, Object> makeGameDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", this.getId());
@@ -54,13 +70,14 @@ public class Game {
         return dto;
     }
 
+    //List para /game
     public List<Map<String, Object>> getAllGamePlayers(Set<GamePlayer> gamePlayers) {
         return gamePlayers
                 .stream()
                 .map(gamePlayer -> gamePlayer.makeGamePlayersDTO())
                 .collect(Collectors.toList());
     }
-
+    //List para Game_view/n
     public List<Object> getAllSalvoes(){
         return this.getGamePlayers()
                 .stream()
@@ -69,6 +86,7 @@ public class Game {
                 .collect(Collectors.toList());
     }
 
+    //List para /games
     public List<Map<String, Object>> getAllScores() {
         if(!scores.isEmpty()){
         return this.scores

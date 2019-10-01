@@ -13,6 +13,22 @@ public class Ship {
     private long id;
     public String type;
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setGamePlayer(GamePlayer gamePlayer) {
+        this.gamePlayer = gamePlayer;
+    }
+
+    public void setShipLocations(Set<String> shipLocations) {
+        this.shipLocations = shipLocations;
+    }
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="gamePlayer_id")
     public GamePlayer gamePlayer;
@@ -50,6 +66,7 @@ public class Ship {
         return type;
     }
 
+    //Dto para game_view/n
     public Map<String, Object> makeShipDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("type", this.getType());

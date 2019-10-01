@@ -16,6 +16,26 @@ public class Score {
     public Date finishDate;
     public double score;
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setFinishDate(Date finishDate) {
+        this.finishDate = finishDate;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
     public long getId() {
         return id;
     }
@@ -48,6 +68,7 @@ public class Score {
         this.game = game;
     }
 
+    //DTO para /games
     public Map<String, Object> makeScoreDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("player", getPlayer().getId());
