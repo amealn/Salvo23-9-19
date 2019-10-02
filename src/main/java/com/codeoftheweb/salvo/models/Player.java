@@ -1,11 +1,18 @@
 package com.codeoftheweb.salvo.models;
 
+import com.codeoftheweb.salvo.repositories.GameRepository;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Player {
@@ -47,7 +54,7 @@ public class Player {
         this.password = password;
     }
 
-    @OneToMany(mappedBy="player", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
     Set<GamePlayer> gamePlayers;
 
     public Set<GamePlayer> getGamePlayers() {
@@ -59,7 +66,7 @@ public class Player {
         gamePlayers.add(gamePlayer);
     }
 
-    @OneToMany(mappedBy="player", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
     Set<Score> scores;
 
     public Set<Score> getScores() {
@@ -93,24 +100,51 @@ public class Player {
         dto.put("id", this.getId());
         dto.put("email", this.getUserName());
         dto.put("score", score);
-          score.put("total", this.getTotalScore());
-          score.put("won", this.getWinScore());
-          score.put("lost", this.getLostScore());
-          score.put("tied", this.getTiedScore());
+        score.put("total", this.getTotalScore());
+        score.put("won", this.getWinScore());
+        score.put("lost", this.getLostScore());
+        score.put("tied", this.getTiedScore());
         return dto;
     }
 
-    public Double getTotalScore(){return this.getWinScore() * 1.0D + this.getTiedScore()*0.5D;}
+    public Double getTotalScore() {
+        return this.getWinScore() * 1.0D + this.getTiedScore() * 0.5D;
+    }
 
-    public long getWinScore(){
+    public long getWinScore() {
         return this.getScores().stream().filter(score -> score.getScore() == 1.0D).count();
     }
-    public long getLostScore(){
+
+    public long getLostScore() {
         return this.getScores().stream().filter(score -> score.getScore() == 0.0D).count();
     }
-    public long getTiedScore(){
+
+    public long getTiedScore() {
         return this.getScores().stream().filter(score -> score.getScore() == 0.5D).count();
     }
 
+
+    /*public Map<String, Object> makePlayer2DTO() {
+        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        dto.put("player", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        dto.put("", this.makePlayer3DTO());
+        return dto;
+    }
+    public Map<String, Object> makePlayer3DTO() {
+        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        dto.put("id", this.getId());
+        dto.put("name", this.getUserName());
+        dto.put("games", this.getAllGames2());
+        return dto;
+    }
+
+    @Autowired
+    private GameRepository gameRepository;
+    public List<Map<String, Object>> getAllGames2() {
+        return gameRepository.findAll()
+                .stream()
+                .map(game -> game.makeGameDTO())
+                .collect(Collectors.toList());
+    }*/
 }
 
