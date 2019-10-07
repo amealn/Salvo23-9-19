@@ -11,56 +11,44 @@ public class Salvo {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
-    public int turn;
+    private int turn;
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setTurn(int turn) {
-        this.turn = turn;
-    }
-
-    public void setGamePlayer(GamePlayer gamePlayer) {
-        this.gamePlayer = gamePlayer;
-    }
-
-    public void setSalvoLocations(Set<String> salvoLocations) {
-        this.salvoLocations = salvoLocations;
-    }
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="gamePlayer_id")
-    public GamePlayer gamePlayer;
-
-    public GamePlayer getGamePlayer(){
-        return gamePlayer;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public int getTurn() {
-        return turn;
-    }
-
-    @ElementCollection
-    @Column(name="salvoLocations")
-    private Set<String> salvoLocations = new LinkedHashSet<>();
-
-    public Set<String> getSalvoLocations() {
-        return salvoLocations;
-    }
-
+    //Constructor
     public Salvo() {
     }
-
     public Salvo(int turn, GamePlayer gamePlayer, Set<String> salvoLocations) {
         this.turn = turn;
         this.gamePlayer = gamePlayer;
         this.salvoLocations = salvoLocations;
     }
+    //Getters y setters
+    public long getId() {return id;}
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getTurn() {return turn;}
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    //Relationships
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="gamePlayer_id")
+    public GamePlayer gamePlayer;
+    public GamePlayer getGamePlayer(){
+        return gamePlayer;
+    }
+    public void setGamePlayer(GamePlayer gamePlayer) {this.gamePlayer = gamePlayer;}
+
+    @ElementCollection
+    @Column(name="salvoLocations")
+    private Set<String> salvoLocations = new LinkedHashSet<>();
+    public Set<String> getSalvoLocations() {
+        return salvoLocations;
+    }
+    public void setSalvoLocations(Set<String> salvoLocations) {this.salvoLocations = salvoLocations;}
+
     //DTO para Game_view/n
     public Map<String, Object> makeSalvoDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
@@ -69,7 +57,4 @@ public class Salvo {
         dto.put("salvoLocations", getSalvoLocations());
         return dto;
     }
-
-
-
 }

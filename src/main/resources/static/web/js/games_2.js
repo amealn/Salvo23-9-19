@@ -4,7 +4,7 @@ $(function() {
 
 function updateViewGames(data) {
   var htmlList = data.map(function (game) {
-      return  '<li class="list-group-item">' + new Date(game.created).toLocaleString() + ' ' + game.gamePlayers.map(function(element) { return element.player.email}).join(', ')  +'</li>';
+      return  '<li class="list-group-item">' + new Date(game.created).toLocaleString() + ' ' + game.gamePlayers.map(function(element) { return element.player.userName}).join(', ')  +'</li>';
   }).join('');
   document.getElementById("game-list").innerHTML = htmlList;
 }

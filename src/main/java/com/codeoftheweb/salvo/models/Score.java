@@ -13,44 +13,41 @@ public class Score {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
-    public Date finishDate;
-    public double score;
+    private Date finishDate;
+    private double score;
 
+    //Constructor
+    public Score() {}
+    public Score(Game game, Player player, double score, Date finishDate) {
+        this.finishDate = finishDate;
+        this.score = score;
+        this.player = player;
+        this.game = game;
+    }
+    //Getters y setters
+    public long getId() {return id;}
     public void setId(long id) {
         this.id = id;
     }
 
+    public Date getFinishDate() {return finishDate;}
     public void setFinishDate(Date finishDate) {
         this.finishDate = finishDate;
     }
 
+    public double getScore() {return score;}
     public void setScore(double score) {
         this.score = score;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public long getId() {
-        return id;
-    }
-    public Date getFinishDate() {
-        return finishDate;
-    }
-    public double getScore() {
-        return score;
-    }
+    //Relationships
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="player_id")
     public Player player;
     public Player getPlayer(){
         return player;
     }
+    public void setPlayer(Player player) {this.player = player;}
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="game_id")
@@ -58,15 +55,7 @@ public class Score {
     public Game getGame(){
         return game;
     }
-
-    public Score() {
-    }
-    public Score(Game game, Player player, double score, Date finishDate) {
-        this.finishDate = finishDate;
-        this.score = score;
-        this.player = player;
-        this.game = game;
-    }
+    public void setGame(Game game) {this.game = game;}
 
     //DTO para /games
     public Map<String, Object> makeScoreDTO() {
@@ -76,11 +65,4 @@ public class Score {
         dto.put("finishDate", getFinishDate());
         return dto;
     }
-
-
-
-
-
-
-
 }

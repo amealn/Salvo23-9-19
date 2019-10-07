@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @Entity
 public class Player {
-    //atributos
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
@@ -24,14 +23,18 @@ public class Player {
     private String userName;
     private String password;
 
-    //constructor
+    //Constructor
     public Player() {
     }
 
     public Player(String userName, String password) {
-
         this.userName = userName;
         this.password = password;
+    }
+
+    //Getters y setters
+    public String getUserName() {
+        return userName;
     }
 
     public void setUserName(String userName) {
@@ -42,8 +45,8 @@ public class Player {
         return id;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getPassword() {
@@ -54,6 +57,7 @@ public class Player {
         this.password = password;
     }
 
+    //Relationships
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
     Set<GamePlayer> gamePlayers;
 
@@ -61,8 +65,11 @@ public class Player {
         return gamePlayers;
     }
 
-    public void addGamePlayer(GamePlayer gamePlayer) {
+    public void setGamePlayers(Set<GamePlayer> gamePlayers) {
+        this.gamePlayers = gamePlayers;
+    }
 
+    public void addGamePlayer(GamePlayer gamePlayer) {
         gamePlayers.add(gamePlayer);
     }
 
@@ -73,24 +80,8 @@ public class Player {
         return scores;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setGamePlayers(Set<GamePlayer> gamePlayers) {
-        this.gamePlayers = gamePlayers;
-    }
-
     public void setScores(Set<Score> scores) {
         this.scores = scores;
-    }
-
-    //DTO para /games
-    public Map<String, Object> makePlayerDTO() {
-        Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("id", this.getId());
-        dto.put("email", this.getUserName());
-        return dto;
     }
 
     //DTO para /leaderBoard
@@ -123,28 +114,7 @@ public class Player {
         return this.getScores().stream().filter(score -> score.getScore() == 0.5D).count();
     }
 
-
-    /*public Map<String, Object> makePlayer2DTO() {
-        Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("player", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        dto.put("", this.makePlayer3DTO());
-        return dto;
-    }
-    public Map<String, Object> makePlayer3DTO() {
-        Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("id", this.getId());
-        dto.put("name", this.getUserName());
-        dto.put("games", this.getAllGames2());
-        return dto;
-    }
-
-    @Autowired
-    private GameRepository gameRepository;
-    public List<Map<String, Object>> getAllGames2() {
-        return gameRepository.findAll()
-                .stream()
-                .map(game -> game.makeGameDTO())
-                .collect(Collectors.toList());
-    }*/
 }
+
+
 

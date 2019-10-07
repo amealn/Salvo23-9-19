@@ -1,6 +1,11 @@
 package com.codeoftheweb.salvo.models;
 
+import com.codeoftheweb.salvo.repositories.PlayerRepository;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
 import java.util.*;
@@ -12,36 +17,27 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
-    public Date creationDate;
+    private Date creationDate;
 
+    //Constructor
+    public Game() {}
+
+    public Game(Date creationDate){
+        this.creationDate = creationDate;
+    }
+    //Getters y setters
+    public long getId() {
+        return id;
+    }
     public void setId(long id) {
         this.id = id;
     }
+    public Date getCreationDate(){return creationDate;}
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
-
-    public void setGamePlayers(Set<GamePlayer> gamePlayers) {
-        this.gamePlayers = gamePlayers;
-    }
-
-    public void setScores(Set<Score> scores) {
-        this.scores = scores;
-    }
-
-    public Game() {}
-
-    public Game(Date creationDate){
-            this.creationDate = creationDate;
-        }
-
-    public long getId() {
-        return id;
-    }
-
-    public Date getCreationDate(){return creationDate;}
-
+    //Relationships
     @OneToMany(mappedBy="game", fetch=FetchType.EAGER)
     Set<GamePlayer> gamePlayers;
 
@@ -53,11 +49,19 @@ public class Game {
 
         gamePlayers.add(gamePlayer);
     }
+    public void setGamePlayers(Set<GamePlayer> gamePlayers) {
+        this.gamePlayers = gamePlayers;
+    }
+
     @OneToMany(mappedBy="game", fetch=FetchType.EAGER)
     Set<Score> scores;
 
     public Set<Score> getScores() {
         return scores;
+    }
+
+    public void setScores(Set<Score> scores) {
+        this.scores = scores;
     }
 
     //DTO para /games
@@ -88,13 +92,11 @@ public class Game {
 
     //List para /games
     public List<Map<String, Object>> getAllScores() {
-        if(!scores.isEmpty()){
+        //if(!scores.isEmpty()){
         return this.scores
                 .stream()
                 .map(score -> score.makeScoreDTO())
                 .collect(Collectors.toList());}
-        else {return null;}
-    }
-
+    //else {return null;}]
 
 }

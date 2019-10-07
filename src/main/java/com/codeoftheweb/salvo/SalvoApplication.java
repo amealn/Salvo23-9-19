@@ -166,13 +166,13 @@ class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
     @Override
     public void init(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(inputUserName -> {
-            Player player = playerRepository.findByUserName(inputUserName);
+        auth.userDetailsService(inputName -> {
+            Player player = playerRepository.findByUserName(inputName);
             if (player != null) {
                 return new User(player.getUserName(), player.getPassword(),
                         AuthorityUtils.createAuthorityList("USER"));
             } else {
-                throw new UsernameNotFoundException("Unknown user: " + inputUserName);
+                throw new UsernameNotFoundException("Unknown user: " + inputName);
             }
         });
     }
@@ -181,15 +181,11 @@ class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 @EnableWebSecurity
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    String[] resources = new String[]{
-            "/include/**", "/css/**", "/icons/**", "/img/**", "/js/**", "/layer/**"
-    };
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(resources).permitAll()
                 .antMatchers("/web/**").permitAll()
+                .antMatchers("/api/games").permitAll()
                 .antMatchers("/**").hasAuthority("USER")
                 .and()
                 .formLogin().usernameParameter("name").passwordParameter("pwd").loginPage("/api/login")
