@@ -70,7 +70,7 @@ public class Game {
         dto.put("id", this.getId());
         dto.put("created", this.getCreationDate());
         dto.put("gamePlayers", getAllGamePlayers());
-        dto.put("score", getAllScores());
+        dto.put("scores", getAllScores());
         return dto;
     }
 
