@@ -92,11 +92,9 @@ public class Game {
 
     //List para /games
     public List<Map<String, Object>> getAllScores() {
-        //if(!scores.isEmpty()){
         return this.scores
                 .stream()
                 .map(score -> score.makeScoreDTO())
                 .collect(Collectors.toList());}
-    //else {return null;}]
 
 }

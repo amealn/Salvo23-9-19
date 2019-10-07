@@ -60,9 +60,9 @@ public class Score {
     //DTO para /games
     public Map<String, Object> makeScoreDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("player", getPlayer().getId());
-        dto.put("score", getScore());
-        dto.put("finishDate", getFinishDate());
+        dto.put("player", this.player.getId());
+        dto.put("score",this.score);
+        dto.put("finishDate", this.finishDate);
         return dto;
     }
 }

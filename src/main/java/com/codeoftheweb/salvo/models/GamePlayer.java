@@ -1,6 +1,7 @@
 package com.codeoftheweb.salvo.models;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
 import java.util.*;
@@ -66,9 +67,8 @@ public class GamePlayer {
     //DTO para /games
     public Map<String, Object> makeGamePlayersDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("gpid", this.getId());
-        dto.put("id", getPlayer().getId());
-        dto.put("name", getPlayer().getUserName());
+        dto.put("id", this.getId());
+        dto.put("player", this.getPlayer().makePlayerDTO());
         return dto;
     }
     //DTO para Game_view/n
