@@ -69,13 +69,13 @@ public class Game {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", this.getId());
         dto.put("created", this.getCreationDate());
-        dto.put("gamePlayers", getAllGamePlayers(getGamePlayers()));
+        dto.put("gamePlayers", getAllGamePlayers());
         dto.put("score", getAllScores());
         return dto;
     }
 
     //List para /game
-    public List<Map<String, Object>> getAllGamePlayers(Set<GamePlayer> gamePlayers) {
+    public List<Map<String, Object>> getAllGamePlayers() {
         return gamePlayers
                 .stream()
                 .map(gamePlayer -> gamePlayer.makeGamePlayersDTO())

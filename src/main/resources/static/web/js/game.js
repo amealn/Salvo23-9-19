@@ -16,7 +16,7 @@ function loadData() {
       else
         playerInfo = [data.gamePlayers[1].player, data.gamePlayers[0].player];
 
-      $('#playerInfo').text(playerInfo[0].userName + '(you) vs ' + playerInfo[1].userName);
+      $('#playerInfo').text(playerInfo[0].email + '(you) vs ' + playerInfo[1].email);
 
       data.ships.forEach(function (shipPiece) {
         shipPiece.locations.forEach(function (shipLocation) {
