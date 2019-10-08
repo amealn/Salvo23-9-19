@@ -1,6 +1,7 @@
 package com.codeoftheweb.salvo.models;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
 import java.util.*;
@@ -15,10 +16,10 @@ public class Ship {
 
     //Constructor
     public Ship() {}
-    public Ship(GamePlayer gamePlayer, String type, Set<String> shipLocation) {
+    public Ship(GamePlayer gamePlayer, String type, Set<String> shipLocations) {
         this.gamePlayer = gamePlayer;
         this.type=type;
-        this.shipLocations = shipLocation;
+        this.shipLocations = shipLocations;
     }
     /*public Ship(String type) {
         this.type = type;

@@ -79,7 +79,7 @@ public class Player {
     public Set<Score> getScores() {
         return scores;
     }
-
+    public void addScore(Score score) {scores.add(score);}
     public void setScores(Set<Score> scores) {
         this.scores = scores;
     }
@@ -122,6 +122,9 @@ public class Player {
         return this.getScores().stream().filter(score -> score.getScore() == 0.5D).count();
     }
 
+
+    /*public List<Map<String, Object>> getSelf(){
+        return gamePlayers.stream().filter(gpself -> gpself.(authentication.getName()))*/
 }
 
 

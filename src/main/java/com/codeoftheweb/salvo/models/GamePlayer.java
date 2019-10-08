@@ -69,16 +69,19 @@ public class GamePlayer {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", this.getId());
         dto.put("player", this.getPlayer().makePlayerDTO());
+        dto.put("joinDate", this.getJoinDate());
         return dto;
     }
     //DTO para Game_view/n
-    public Map<String, Object> makeGame2DTO() {
+    public Map<String, Object> makeGame2DTO(Authentication authentication) {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", this.game.getId());
-        dto.put("creationDate", this.game.getCreationDate());
+        dto.put("created", this.game.getCreationDate());
+        //dto.put("gameState", );
         dto.put("gamePlayers", this.game.getAllGamePlayers());
-        dto.put("ships", getAllShips());
+        dto.put("ships", Player.getUserName(authentication.getName()).getAllShips());
         dto.put("salvoes", getGame().getAllSalvoes());
+        //dto.put("hits", );
         return dto;
     }
     //Lista para game_view/n
@@ -90,6 +93,6 @@ public class GamePlayer {
     }
 
 
-
 }
+
 

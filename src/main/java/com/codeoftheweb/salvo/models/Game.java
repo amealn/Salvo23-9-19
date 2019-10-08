@@ -33,10 +33,10 @@ public class Game {
         this.id = id;
     }
     public Date getCreationDate(){return creationDate;}
-
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
+
     //Relationships
     @OneToMany(mappedBy="game", fetch=FetchType.EAGER)
     Set<GamePlayer> gamePlayers;
@@ -59,7 +59,10 @@ public class Game {
     public Set<Score> getScores() {
         return scores;
     }
+    public void addScore(Score score) {
 
+        scores.add(score);
+    }
     public void setScores(Set<Score> scores) {
         this.scores = scores;
     }
@@ -96,5 +99,6 @@ public class Game {
                 .stream()
                 .map(score -> score.makeScoreDTO())
                 .collect(Collectors.toList());}
+
 
 }
