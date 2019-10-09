@@ -49,12 +49,6 @@ public class Salvo {
     }
     public void setSalvoLocations(Set<String> salvoLocations) {this.salvoLocations = salvoLocations;}
 
-    //DTO para Game_view/n
-    public Map<String, Object> makeSalvoDTO() {
-        Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("turn", this.getTurn());
-        dto.put("player", this.getGamePlayer().getPlayer().getId());
-        dto.put("locations", getSalvoLocations());
-        return dto;
-    }
+
+
 }

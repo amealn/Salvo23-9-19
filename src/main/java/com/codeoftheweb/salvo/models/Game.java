@@ -77,19 +77,11 @@ public class Game {
         return dto;
     }
 
-    //List para /game
+    //List para /games
     public List<Map<String, Object>> getAllGamePlayers() {
         return gamePlayers
                 .stream()
                 .map(gamePlayer -> gamePlayer.makeGamePlayersDTO())
-                .collect(Collectors.toList());
-    }
-    //List para Game_view/n
-    public List<Object> getAllSalvoes(){
-        return this.getGamePlayers()
-                .stream()
-                .flatMap(gamePlayer -> gamePlayer.getSalvoes().stream())
-                .map(salvo -> salvo.makeSalvoDTO())
                 .collect(Collectors.toList());
     }
 
@@ -103,4 +95,5 @@ public class Game {
     public List<Player> getPlayers() {
         return gamePlayers.stream().map(player -> player.getPlayer()).collect(Collectors.toList());
     }
+
 }

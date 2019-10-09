@@ -1,7 +1,6 @@
 package com.codeoftheweb.salvo.models;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
 import java.util.*;
@@ -42,11 +41,5 @@ public class Ship {
     public Set<String> getShipLocations() {return shipLocations;}
     public void setShipLocations(Set<String> shipLocations) {this.shipLocations = shipLocations;}
 
-    //Dto para game_view/n
-    public Map<String, Object> makeShipDTO() {
-        Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("type", this.getType());
-        dto.put("locations", this.getShipLocations());
-        return dto;
-    }
+
 }
