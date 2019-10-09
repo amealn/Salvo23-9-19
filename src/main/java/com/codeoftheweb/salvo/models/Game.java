@@ -46,7 +46,7 @@ public class Game {
     }
 
     public void addGamePlayer(GamePlayer gamePlayer) {
-
+        gamePlayer.setGame(this);
         gamePlayers.add(gamePlayer);
     }
     public void setGamePlayers(Set<GamePlayer> gamePlayers) {
@@ -100,5 +100,7 @@ public class Game {
                 .map(score -> score.makeScoreDTO())
                 .collect(Collectors.toList());}
 
-
+    public List<Player> getPlayers() {
+        return gamePlayers.stream().map(player -> player.getPlayer()).collect(Collectors.toList());
+    }
 }

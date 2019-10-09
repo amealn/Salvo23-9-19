@@ -21,9 +21,7 @@ public class Ship {
         this.type=type;
         this.shipLocations = shipLocations;
     }
-    /*public Ship(String type) {
-        this.type = type;
-    }*/
+
     //Getters y setters
     public long getId() {return id;}
     public void setId(long id) {this.id = id;}
@@ -48,7 +46,7 @@ public class Ship {
     public Map<String, Object> makeShipDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("type", this.getType());
-        dto.put("shipLocations", this.getShipLocations());
+        dto.put("locations", this.getShipLocations());
         return dto;
     }
 }

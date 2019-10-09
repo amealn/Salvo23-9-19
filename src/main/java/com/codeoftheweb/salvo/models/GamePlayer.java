@@ -34,9 +34,6 @@ public class GamePlayer {
         this.joinDate = joinDate;
     }
 
-    /*public GamePlayer(Date joinDate){
-        this.joinDate = joinDate;
-    }*/
     //Relationships
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="player_id")
@@ -57,12 +54,19 @@ public class GamePlayer {
 
     public Set<Ship> getShips() {return ships;}
     public void setShips(Set<Ship> ships) {this.ships = ships;}
+    public void addShip(Ship ship) {
+        ships.add(ship);
+    }
+
 
     @OneToMany(mappedBy="gamePlayer", fetch=FetchType.EAGER)
     Set<Salvo> salvoes;
 
     public Set<Salvo> getSalvoes() {return salvoes;}
     public void setSalvoes(Set<Salvo> salvoes) {this.salvoes = salvoes;}
+    public void addSalvo(Salvo salvo) {
+        salvoes.add(salvo);
+    }
 
     //DTO para /games
     public Map<String, Object> makeGamePlayersDTO() {
@@ -73,15 +77,15 @@ public class GamePlayer {
         return dto;
     }
     //DTO para Game_view/n
-    public Map<String, Object> makeGame2DTO(Authentication authentication) {
+    public Map<String, Object> makeGameViewDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", this.game.getId());
         dto.put("created", this.game.getCreationDate());
         //dto.put("gameState", );
         dto.put("gamePlayers", this.game.getAllGamePlayers());
-        dto.put("ships", Player.getUserName(authentication.getName()).getAllShips());
+        dto.put("ships", getAllShips());
         dto.put("salvoes", getGame().getAllSalvoes());
-        //dto.put("hits", );
+        dto.put("hits", this.makeHitsDTO());
         return dto;
     }
     //Lista para game_view/n
@@ -90,6 +94,44 @@ public class GamePlayer {
                 .stream()
                 .map(ship -> ship.makeShipDTO())
                 .collect(Collectors.toList());
+    }
+    public Map<String, Object> makeHitsDTO() {
+        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        dto.put("self", getAllSelf());
+        dto.put("opponent", getAllOpponent());
+        return dto;
+    }
+    public List<Map<String, Object>> getAllSelf() {
+        return ships
+                .stream()
+                .map(ship -> ship.makeSelfDTO())
+                .collect(Collectors.toList());
+    }
+    public List<Map<String, Object>> getAllOpponent() {
+        return ships
+                .stream()
+                .map(ship -> ship.makeOpponentDTO())
+                .collect(Collectors.toList());
+    }
+    public Map<String, Object> makeSelfDTO() {
+        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        dto.put("turn", getSalvoes().getTurn());
+        dto.put("hitLocations", getAllHitLocations());
+        dto.put("damages", );
+        dto.put("missed", );
+        return dto;
+    }
+    public Map<String, Object> makeOpponentDTO() {
+        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        dto.put("turn", getSalvoes().getTurn());
+        dto.put("hitLocations", getAllHitLocations());
+        dto.put("damages", );
+        dto.put("missed", );
+        return dto;
+    }
+
+    public Score getScore() {
+        return player.getScore(game);
     }
 
 
