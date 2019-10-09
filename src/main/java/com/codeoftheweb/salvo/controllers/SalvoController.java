@@ -220,7 +220,7 @@ public class SalvoController {
     //DTO para Game_view/n
     public Map<String, Object> makeGameViewDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("id", getId());
+        dto.put("id", gameRepository.fin);
         dto.put("created", this.game.getCreationDate());
         //dto.put("gameState", );
         dto.put("gamePlayers", getGame().getAllGamePlayers());
@@ -265,8 +265,8 @@ public class SalvoController {
         dto.put("missed", );
         return dto;
     }
-    //Lista para game_view/n
 
+    //Lista para game_view/n
     public List<String> getAllHitLocations() {
         List<String> salvoList = getSalvoes()
                 .stream()
@@ -281,19 +281,18 @@ public class SalvoController {
     }
 
     //Lista para game_view/n
-
     public List<Map<String, Object>> getAllSelves() {
-        return game.gamePlayers
+        return gamePlayerRepository.findAll()
                 .stream()
-                .map(gamePlayer -> gamePlayer.makeSelfDTO())
+                .map(gamePlayer -> this.makeSelfDTO())
                 .collect(Collectors.toList());
     }
-    //Lista para game_view/n
 
+    //Lista para game_view/n
     public List<Map<String, Object>> getAllOpponents() {
-        return game.gamePlayers
+        return gamePlayerRepository.findAll()
                 .stream()
-                .map(gamePlayer -> gamePlayer.makeOpponentDTO())
+                .map(gamePlayer -> this.makeOpponentDTO())
                 .collect(Collectors.toList());
     }
 
@@ -302,7 +301,7 @@ public class SalvoController {
     public List<Map<String, Object>> getAllShips() {
         return shipRepository.findAll()
                 .stream()
-                .map(ship -> ship.makeShipDTO())
+                .map(ship -> this.makeShipDTO())
                 .collect(Collectors.toList());
     }
 
@@ -311,8 +310,35 @@ public class SalvoController {
         return gamePlayerRepository.findAll()
                 .stream()
                 .flatMap(gamePlayer -> gamePlayer.getSalvoes().stream())
-                .map(salvo -> salvo.makeSalvoDTO())
+                .map(salvo -> this.makeSalvoDTO())
                 .collect(Collectors.toList());
+    }
+    //Tamaño de los barcos
+    private int longType(String ship) {
+
+        int shipSize = 0;
+
+        switch (ship) {
+            case "Carrier":
+                shipSize = 5;
+                break;
+            case "Battleship":
+                shipSize = 4;
+                break;
+            case "Submarine":
+                shipSize = 3;
+                break;
+            case "Destroyer":
+                shipSize = 3;
+                break;
+            case "Patrol Boat":
+                shipSize = 2;
+                break;
+            default:
+                shipSize = 0;
+                break;
+        }
+        return shipSize;
     }
 
 
