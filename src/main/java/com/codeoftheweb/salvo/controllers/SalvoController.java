@@ -245,8 +245,8 @@ public class SalvoController {
     }
 
     //Lista y DTO para Game_view --> turn-hitLocations-damages-missed
-    public List<Map> getAllHits(GamePlayer gamePlayer) {
-        List<Map> dto = new ArrayList<>();
+    public Set<Map> getAllHits(GamePlayer gamePlayer) {
+        Set<Map> dto = new HashSet<>();
 
         //Acumuladores para el total de hits a un barco particular
         Integer carrierHitsTotal = 0;
@@ -255,29 +255,30 @@ public class SalvoController {
         Integer destroyerHitsTotal = 0;
         Integer patrolboatHitsTotal = 0;
 
-        List<String> carrierLocations = new ArrayList<>();
-        List<String> battleshipLocations = new ArrayList<>();
-        List<String> submarineLocations = new ArrayList<>();
-        List<String> destroyerLocations = new ArrayList<>();
-        List<String> patrolboatLocations = new ArrayList<>();
+        //Listas que indican donde estan cada tipo de barco para player y oponente
+        Set<String> carrierLocations = new HashSet<>();
+        Set<String> battleshipLocations = new HashSet<>();
+        Set<String> submarineLocations = new HashSet<>();
+        Set<String> destroyerLocations = new HashSet<>();
+        Set<String> patrolboatLocations = new HashSet<>();
 
         //Loop de los SHIPS del PLAYER junto a sus locations y tipo de ship
         for (Ship ship : gamePlayer.getShips()) {
             switch (ship.getType()) {
-                case "carrier":
-                    carrierLocations = (List<String>) ship.getShipLocations();
+                case "Carrier":
+                    carrierLocations =  ship.getShipLocations();
                     break;
-                case "battleship":
-                    battleshipLocations = (List<String>) ship.getShipLocations();
+                case "Battleship":
+                    battleshipLocations =  ship.getShipLocations();
                     break;
-                case "submarine":
-                    submarineLocations = (List<String>) ship.getShipLocations();
+                case "Submarine":
+                    submarineLocations =  ship.getShipLocations();
                     break;
-                case "destroyer":
-                    destroyerLocations = (List<String>) ship.getShipLocations();
+                case "Destroyer":
+                    destroyerLocations = ship.getShipLocations();
                     break;
-                case "patrolboat":
-                    patrolboatLocations = (List<String>) ship.getShipLocations();
+                case "Patrol Boat":
+                    patrolboatLocations = ship.getShipLocations();
                     break;
             }
         }
@@ -295,11 +296,10 @@ public class SalvoController {
             //Contador que agarra el tamanio total de SalvoLocations y le va restando
             Integer missedShots = salvo.getSalvoLocations().size();
 
-            List<String> salvoLocationsList = new ArrayList<>();
-            salvoLocationsList.addAll(salvo.getSalvoLocations());
+            Set<String> salvoLocationsList = new HashSet<>(salvo.getSalvoLocations());
 
             //Lista de hitLocations
-            List<String> hitCellsList = new ArrayList<>();
+            Set<String> hitCellsList = new HashSet<>();
 
             //Loop para relacionar la lista de ships del PLAYER con los salvos del OPPONENT
             for (String salvoShot : salvoLocationsList) {
@@ -351,7 +351,7 @@ public class SalvoController {
             damagesPerTurn.put("destroyerHits", destroyerHitsInTurn);
             damagesPerTurn.put("patrolboatHits", patrolboatHitsInTurn);
 
-            //Total de Hits a los barcos hasta llegar a su maximo size
+            //Total de Hits a los barcos
             damagesPerTurn.put("carrier", carrierHitsTotal);
             damagesPerTurn.put("battleship", battleshipHitsTotal);
             damagesPerTurn.put("submarine", submarineHitsTotal);
