@@ -49,6 +49,4 @@ public class Salvo {
     }
     public void setSalvoLocations(Set<String> salvoLocations) {this.salvoLocations = salvoLocations;}
 
-
-
 }

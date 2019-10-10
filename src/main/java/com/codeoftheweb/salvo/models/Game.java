@@ -96,6 +96,4 @@ public class Game {
         return gamePlayers.stream().map(player -> player.getPlayer()).collect(Collectors.toList());
     }
 
-
-
 }

@@ -124,10 +124,6 @@ public class Player {
         return this.getScores().stream().filter(score -> score.getScore() == 0.5D).count();
     }
 
-    public Score getScore(Game game) {
-
-        return scores.stream().filter(p -> p.getGame().getId() == game.getId()).findFirst().orElse(null);
-    }
 }
 
 

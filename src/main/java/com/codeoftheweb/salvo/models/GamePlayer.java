@@ -107,11 +107,6 @@ public class GamePlayer {
         return dto;
     }
 
-    public Score getScore() {
-        return player.getScore(game);
-    }
-
-
 }
 
 

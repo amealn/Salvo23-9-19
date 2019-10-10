@@ -41,5 +41,4 @@ public class Ship {
     public Set<String> getShipLocations() {return shipLocations;}
     public void setShipLocations(Set<String> shipLocations) {this.shipLocations = shipLocations;}
 
-
 }
