@@ -165,7 +165,7 @@ public class SalvoController {
             }
         }
         salvo.setGamePlayer(gpActual);
-        salvoRepository.save(salvo);
+        salvoRepository.save(new Salvo(salvoes.size()+1, gpActual, salvo.getSalvoLocations()));
         return new ResponseEntity<>(makeMap("OK", "Salvoes created"), HttpStatus.CREATED);
     }
 
@@ -394,7 +394,7 @@ public class SalvoController {
 
     private String getGameState(GamePlayer gpActual) {
 
-        if (gpActual.getShips().size() < 5) {
+        if (gpActual.getShips().size() == 0) {
             return "PLACESHIPS";
         }
         if (gpActual.getShips().size() == 5) {
@@ -405,9 +405,10 @@ public class SalvoController {
                 return "PLAY";
             }
         }
-        if (gpActual.getSalvoes().size() > 0 || getOpponent(gpActual).getSalvoes().size() == 0) {
+        //Game over results
+        if (gpActual.getSalvoes().size() > 0 && getOpponent(gpActual).getSalvoes().size() == 0) {
             return "WON";
-        } else if (gpActual.getSalvoes().size() == 0 || getOpponent(gpActual).getSalvoes().size() > 0) {
+        } else if (gpActual.getSalvoes().size() == 0 && getOpponent(gpActual).getSalvoes().size() > 0) {
             return "LOST";
         } else
             return "TIE";
