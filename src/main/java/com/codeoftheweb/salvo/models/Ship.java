@@ -15,10 +15,10 @@ public class Ship {
 
     //Constructor
     public Ship() {}
-    public Ship(GamePlayer gamePlayer, String type, Set<String> shipLocations) {
+    public Ship(GamePlayer gamePlayer, String type, Set<String> locations) {
         this.gamePlayer = gamePlayer;
         this.type=type;
-        this.shipLocations = shipLocations;
+        this.locations = locations;
     }
 
     //Getters y setters
@@ -37,8 +37,8 @@ public class Ship {
 
     @ElementCollection
     @Column(name="shipLocations")
-    private Set<String> shipLocations = new LinkedHashSet<>();
-    public Set<String> getShipLocations() {return shipLocations;}
-    public void setShipLocations(Set<String> shipLocations) {this.shipLocations = shipLocations;}
+    private Set<String> locations = new LinkedHashSet<>();
+    public Set<String> getLocations() {return locations;}
+    public void setLocations(Set<String> locations) {this.locations = locations;}
 
 }
