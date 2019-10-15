@@ -106,6 +106,13 @@ public class GamePlayer {
         dto.put("joinDate", this.getJoinDate());
         return dto;
     }
+    //Metodo para indicar el oponente del PLAYER en un game en particular
+    public GamePlayer opponent(){
+        return game.getGamePlayers()
+                .stream()
+                .filter(gamePlayerInStream -> gamePlayerInStream.getId() != getPlayer().getId())
+                .findFirst().orElse(this);
+    }
 
 }
 
