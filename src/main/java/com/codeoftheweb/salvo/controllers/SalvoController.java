@@ -328,26 +328,30 @@ public class SalvoController {
         if (getOpponent(gpActual) == null) {
             return "WAITINGFOROPP";
         }
-        if (gpActual.getSalvoes().isEmpty() && getOpponent(gpActual).getSalvoes().isEmpty()) {
+        if (gpActual.getSalvoes().size() == getOpponent(gpActual).getSalvoes().size()
+                && getSunkShips(gpActual) < 17 == getSunkShips(getOpponent(gpActual)) < 17) {
             return "PLAY";
         }
-        //Game over results
-        if (gpActual.getSalvoes().size() > 0 && getOpponent(gpActual).getSalvoes().size() == 0) {
-            if (gpActual.getPlayer().getScores().isEmpty()) {
-                gpActual.getPlayer().getScores().forEach(scores -> scores.setPlayer(gpActual.getPlayer()));
-                scoreRepository.saveAll(scores);
+        if (gpActual.getSalvoes().size() < getOpponent(gpActual).getSalvoes().size()) {
+            return "WAIT";
+        }
+        Date date = new Date();
+        if (getSunkShips(gpActual) < 17 && getSunkShips(getOpponent(gpActual)) == 17) {
+            if (gpActual.getGame().getScores().isEmpty()) {
+                Score newScore = new Score(gpActual.getGame(), gpActual.getPlayer(), 1, date);
+                scoreRepository.save(newScore);
             }
             return "WON";
-        } else if (gpActual.getSalvoes().size() == 0 && getOpponent(gpActual).getSalvoes().size() > 0) {
-            if (gpActual.getPlayer().getScores().isEmpty()) {
-                gpActual.getPlayer().getScores().forEach(scores -> scores.setPlayer(gpActual.getPlayer()));
-                scoreRepository.saveAll(scores);
+        } else if (getSunkShips(gpActual) == 17 && getSunkShips(getOpponent(gpActual)) < 17) {
+               if (gpActual.getGame().getScores().isEmpty()) {
+                Score newScore = new Score(gpActual.getGame(), gpActual.getPlayer(), 0, date);
+                scoreRepository.save(newScore);
             }
             return "LOST";
-        } else if (gpActual.getSalvoes().size() == 0 && getOpponent(gpActual).getSalvoes().size() == 0) {
-            if (gpActual.getPlayer().getScores().isEmpty()) {
-                gpActual.getPlayer().getScores().forEach(scores -> scores.setPlayer(gpActual.getPlayer()));
-                scoreRepository.saveAll(scores);
+        } else if (getSunkShips(gpActual) == 17 && getSunkShips(getOpponent(gpActual)) == 17) {
+            if (gpActual.getGame().getScores().isEmpty()) {
+                Score newScore = new Score(gpActual.getGame(), gpActual.getPlayer(), 0.5, date);
+                scoreRepository.save(newScore);
             }
             return "TIE";
         } else
@@ -369,11 +373,26 @@ public class SalvoController {
     }
 
     //Metodo para indicar el oponente del PLAYER en un game en particular
-    public GamePlayer getOpponent(GamePlayer gamePlayer) {
+    private GamePlayer getOpponent(GamePlayer gamePlayer) {
         return gamePlayer.getGame().getGamePlayers()
                 .stream()
                 .filter(gamePlayerInStream -> gamePlayerInStream.getId() != gamePlayer.getId())
                 .findAny().orElse(null);
+    }
+
+    //Metodo para indicar numero de ships HUNDIDOS para verificar GAME OVER
+    private int getSunkShips(GamePlayer gp) {
+        GamePlayer opp = getOpponent(gp);
+        List<String> ships = new ArrayList<>();
+        List<String> salvoes = new ArrayList<>();
+        for (Ship ship : gp.getShips()) {
+            ships.addAll(ship.getLocations());
+        }
+        for (Salvo salvo : opp.getSalvoes()) {
+            salvoes.addAll(salvo.getSalvoLocations());
+        }
+        ships.retainAll(salvoes);
+        return ships.size();
     }
 
 }
