@@ -50,7 +50,7 @@ public class SalvoController {
         return dto;
     }
 
-    public List<Map<String, Object>> getAllGames() {
+    private List<Map<String, Object>> getAllGames() {
         return gameRepository.findAll()
                 .stream()
                 .map(Game::makeGameDTO)
@@ -65,7 +65,7 @@ public class SalvoController {
         } else {
             Player creatorPlayer = playerRepository.findByUserName(authentication.getName());
             Date newDate = new Date();
-            Game newGame = gameRepository.save(new Game());
+            Game newGame = gameRepository.save(new Game(newDate));
             GamePlayer newGamePlayer = gamePlayerRepository.save(new GamePlayer(newDate, creatorPlayer, newGame));
             long gamePlayerID = newGamePlayer.getId();
             return new ResponseEntity<>(makeMap("gpid", gamePlayerID), HttpStatus.CREATED);
@@ -103,7 +103,7 @@ public class SalvoController {
 
     //Create players
     @RequestMapping(path = "/players", method = RequestMethod.POST)
-    public ResponseEntity<String> createPlayer(@RequestParam("email") String email,
+    public ResponseEntity<Object> createPlayer(@RequestParam("email") String email,
                                                @RequestParam("password") String password) {
         if (email.isEmpty() || password.isEmpty()) {
             return new ResponseEntity<>("Enter all data", HttpStatus.FORBIDDEN);
@@ -175,7 +175,7 @@ public class SalvoController {
     public List<Map<String, Object>> getLeaderboard() {
         return playerRepository.findAll()
                 .stream()
-                .map(player -> player.makePlayerLeaderboardDTO())
+                .map(Player::makePlayerLeaderboardDTO)
                 .collect(Collectors.toList());
     }
 
@@ -206,10 +206,10 @@ public class SalvoController {
         dto.put("created", gamePlayer.getGame().getCreationDate());
         dto.put("gameState", getGameState(gamePlayer));
         dto.put("gamePlayers", gamePlayer.getGame().getAllGamePlayers());
-        dto.put("ships", gamePlayer.getShips().stream().map(ship -> makeShipDTO(ship)).collect(Collectors.toList()));
+        dto.put("ships", gamePlayer.getShips().stream().map(this::makeShipDTO).collect(Collectors.toList()));
         dto.put("salvoes", gamePlayer.getGame().getGamePlayers()
                 .stream()
-                .flatMap(gamePlayer1 -> gamePlayer1.getSalvoes().stream().map(salvo -> makeSalvoDTO(salvo))).collect(Collectors.toList()));
+                .flatMap(gamePlayer1 -> gamePlayer1.getSalvoes().stream().map(this::makeSalvoDTO)).collect(Collectors.toList()));
         dto.put("hits", hits);
         if (getOpponent(gamePlayer) != null) {
             hits.put("self", getAllHits(getOpponent(gamePlayer)));
@@ -258,6 +258,7 @@ public class SalvoController {
 
         List<String> hitLocations = new ArrayList<>();
 
+        //Loop de SALVOES del PLAYER y los SHIPS del OPPONENT
         for (Salvo salvo : gamePlayer.getSalvoes()) {
             for (Ship ship : getOpponent(gamePlayer).getShips()) {
                 List<String> hits = new ArrayList<>(salvo.getSalvoLocations());
@@ -328,29 +329,29 @@ public class SalvoController {
         if (getOpponent(gpActual) == null) {
             return "WAITINGFOROPP";
         }
-        if (gpActual.getSalvoes().size() == getOpponent(gpActual).getSalvoes().size()
-                && getSunkShips(gpActual) < 17 == getSunkShips(getOpponent(gpActual)) < 17) {
+        if (gpActual.getSalvoes().size() == getOpponent(gpActual).getSalvoes().size() &&
+                (getSunkShips(gpActual) < 17 && getSunkShips(getOpponent(gpActual)) < 17)) {
             return "PLAY";
         }
-        if (gpActual.getSalvoes().size() < getOpponent(gpActual).getSalvoes().size()) {
+        if (gpActual.getSalvoes().size() > getOpponent(gpActual).getSalvoes().size()) {
             return "WAIT";
         }
         Date date = new Date();
         if (getSunkShips(gpActual) < 17 && getSunkShips(getOpponent(gpActual)) == 17) {
+            Score newScore = new Score(gpActual.getGame(), gpActual.getPlayer(), 1, date);
             if (gpActual.getGame().getScores().isEmpty()) {
-                Score newScore = new Score(gpActual.getGame(), gpActual.getPlayer(), 1, date);
                 scoreRepository.save(newScore);
             }
             return "WON";
         } else if (getSunkShips(gpActual) == 17 && getSunkShips(getOpponent(gpActual)) < 17) {
-               if (gpActual.getGame().getScores().isEmpty()) {
-                Score newScore = new Score(gpActual.getGame(), gpActual.getPlayer(), 0, date);
+            Score newScore = new Score(gpActual.getGame(), gpActual.getPlayer(), 0, date);
+            if (gpActual.getGame().getScores().isEmpty()) {
                 scoreRepository.save(newScore);
             }
             return "LOST";
         } else if (getSunkShips(gpActual) == 17 && getSunkShips(getOpponent(gpActual)) == 17) {
+            Score newScore = new Score(gpActual.getGame(), gpActual.getPlayer(), 0.5, date);
             if (gpActual.getGame().getScores().isEmpty()) {
-                Score newScore = new Score(gpActual.getGame(), gpActual.getPlayer(), 0.5, date);
                 scoreRepository.save(newScore);
             }
             return "TIE";

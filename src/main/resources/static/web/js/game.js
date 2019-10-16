@@ -202,7 +202,8 @@ function showSelf (gamePlayerData) {
 
 
     gamePlayerData.ships.forEach(function(ship) {
-        ship.locations   =   ship.locations.sort();
+        const sortAlphaNum = (a, b) => a.localeCompare(b, 'en', { numeric: true })
+        ship.locations   =   ship.locations.sort(sortAlphaNum);
         let firstCellID;
         firstCellID = "#p1_" + ship.locations[0];
         if (ship.locations[0].substring(1) === ship.locations[1].substring(1)) {
@@ -407,7 +408,7 @@ function makeSalvoJSON() {
 }
 
 function makeGameRecordTable (hitsArray, gameRecordTableId) {
-
+    const sortAlphaNum = (a, b) => a.localeCompare(b, 'en', { numeric: true })
     var tableId = "#" + gameRecordTableId + " tbody";
     $(tableId).empty();
     let shipsAfloat = 5;
@@ -420,6 +421,7 @@ function makeGameRecordTable (hitsArray, gameRecordTableId) {
     }
 
     hitsArray.forEach(function (playTurn) {
+
         let hitsReport = "";
         if (playTurn.damages.carrierHits > 0){
             hitsReport += "Carrier " + addDamagesIcons(playTurn.damages.carrierHits, "hit") + " ";
