@@ -1,18 +1,11 @@
 package com.codeoftheweb.salvo.models;
 
-import com.codeoftheweb.salvo.repositories.GameRepository;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
+import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 public class Player {

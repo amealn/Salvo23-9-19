@@ -1,12 +1,6 @@
 package com.codeoftheweb.salvo.models;
 
-import com.codeoftheweb.salvo.repositories.PlayerRepository;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-
 import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;

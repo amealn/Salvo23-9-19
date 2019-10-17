@@ -26,11 +26,6 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @SpringBootApplication
 public class SalvoApplication extends SpringBootServletInitializer {
@@ -42,21 +37,20 @@ public class SalvoApplication extends SpringBootServletInitializer {
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-
     @Bean
     public CommandLineRunner initData() {
         return (args) -> {
 
         };
     }
-
 }
 
+//Autenticacion del jugador loggeado
 @Configuration
 class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
     @Autowired
-    PlayerRepository playerRepository;
+    private PlayerRepository playerRepository;
 
     @Override
     public void init(AuthenticationManagerBuilder auth) throws Exception {
@@ -71,6 +65,8 @@ class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
         });
     }
 }
+
+//Login, logout y paginas permitidas
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {

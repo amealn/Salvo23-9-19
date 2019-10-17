@@ -1,11 +1,9 @@
 package com.codeoftheweb.salvo.models;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 public class GamePlayer {
