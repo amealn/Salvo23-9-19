@@ -106,7 +106,7 @@ public class SalvoController {
     public ResponseEntity<Object> createPlayer(@RequestParam("email") String email,
                                                @RequestParam("password") String password) {
         if (email.isEmpty() || password.isEmpty()) {
-            return new ResponseEntity<>("Enter all data", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(makeMap("error", "Enter all data"), HttpStatus.FORBIDDEN);
         }
 
         Player player = playerRepository.findByUserName(email);
@@ -249,18 +249,20 @@ public class SalvoController {
         int destroyerHitsTotal = 0;
         int patrolboatHitsTotal = 0;
 
-        //Acumuladores que indican los salvo hits que se hacen a cada barco EN CADA TURNO
-        int carrierHitsInTurn = 0;
-        int battleshipHitsInTurn = 0;
-        int submarineHitsInTurn = 0;
-        int destroyerHitsInTurn = 0;
-        int patrolboatHitsInTurn = 0;
-
-        List<String> hitLocations = new ArrayList<>();
         List<Salvo> salvoes = orderSalvoes(gamePlayer.getSalvoes());
 
         //Loop de SALVOES del PLAYER y los SHIPS del OPPONENT
         for (Salvo salvo : salvoes) {
+
+            List<String> hitLocations = new ArrayList<>();
+
+            //Acumuladores que indican los salvo hits que se hacen a cada barco EN CADA TURNO
+            int carrierHitsInTurn = 0;
+            int battleshipHitsInTurn = 0;
+            int submarineHitsInTurn = 0;
+            int destroyerHitsInTurn = 0;
+            int patrolboatHitsInTurn = 0;
+
             for (Ship ship : getOpponent(gamePlayer).getShips()) {
                 List<String> hits = new ArrayList<>(salvo.getSalvoLocations());
                 hits.retainAll(ship.getLocations());
