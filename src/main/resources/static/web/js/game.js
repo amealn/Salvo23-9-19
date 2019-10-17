@@ -408,7 +408,6 @@ function makeSalvoJSON() {
 }
 
 function makeGameRecordTable (hitsArray, gameRecordTableId) {
-    const sortAlphaNum = (a, b) => a.localeCompare(b, 'en', { numeric: true })
     var tableId = "#" + gameRecordTableId + " tbody";
     $(tableId).empty();
     let shipsAfloat = 5;

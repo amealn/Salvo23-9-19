@@ -75,7 +75,6 @@ public class Player {
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
     Set<Score> scores;
-
     public Set<Score> getScores() {
         return scores;
     }

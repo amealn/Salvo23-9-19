@@ -111,7 +111,7 @@ public class SalvoController {
 
         Player player = playerRepository.findByUserName(email);
         if (player != null) {
-            return new ResponseEntity<>("Name already used", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(makeMap("error", "Name already used"), HttpStatus.FORBIDDEN);
         }
 
         playerRepository.save(new Player(email, passwordEncoder.encode(password)));
@@ -239,8 +239,8 @@ public class SalvoController {
     }
 
     //Lista y DTO para Game_view --> turn-hitLocations-damages-missed
-    private Set<Map<String, Object>> getAllHits(GamePlayer gamePlayer) {
-        Set<Map<String, Object>> dto = new HashSet<>();
+    private List<Map<String, Object>> getAllHits(GamePlayer gamePlayer) {
+        List<Map<String, Object>> dto = new ArrayList<>();
 
         //Acumuladores para el TOTAL de hits a un barco particular
         int carrierHitsTotal = 0;
@@ -257,9 +257,10 @@ public class SalvoController {
         int patrolboatHitsInTurn = 0;
 
         List<String> hitLocations = new ArrayList<>();
+        List<Salvo> salvoes = orderSalvoes(gamePlayer.getSalvoes());
 
         //Loop de SALVOES del PLAYER y los SHIPS del OPPONENT
-        for (Salvo salvo : gamePlayer.getSalvoes()) {
+        for (Salvo salvo : salvoes) {
             for (Ship ship : getOpponent(gamePlayer).getShips()) {
                 List<String> hits = new ArrayList<>(salvo.getSalvoLocations());
                 hits.retainAll(ship.getLocations());
@@ -329,29 +330,34 @@ public class SalvoController {
         if (getOpponent(gpActual) == null) {
             return "WAITINGFOROPP";
         }
-        if (gpActual.getSalvoes().size() == getOpponent(gpActual).getSalvoes().size() &&
+        if (getOpponent(gpActual).getShips().size() == 0) {
+            return "WAIT";
+        }
+        if ((gpActual.getSalvoes().size() <= getOpponent(gpActual).getSalvoes().size()) &&
                 (getSunkShips(gpActual) < 17 && getSunkShips(getOpponent(gpActual)) < 17)) {
             return "PLAY";
         }
         if (gpActual.getSalvoes().size() > getOpponent(gpActual).getSalvoes().size()) {
             return "WAIT";
         }
+
         Date date = new Date();
+
         if (getSunkShips(gpActual) < 17 && getSunkShips(getOpponent(gpActual)) == 17) {
             Score newScore = new Score(gpActual.getGame(), gpActual.getPlayer(), 1, date);
-            if (gpActual.getGame().getScores().isEmpty()) {
+            if (!existsScore(newScore, gpActual.getGame())) {
                 scoreRepository.save(newScore);
             }
             return "WON";
         } else if (getSunkShips(gpActual) == 17 && getSunkShips(getOpponent(gpActual)) < 17) {
             Score newScore = new Score(gpActual.getGame(), gpActual.getPlayer(), 0, date);
-            if (gpActual.getGame().getScores().isEmpty()) {
+            if (!existsScore(newScore, gpActual.getGame())) {
                 scoreRepository.save(newScore);
             }
             return "LOST";
         } else if (getSunkShips(gpActual) == 17 && getSunkShips(getOpponent(gpActual)) == 17) {
             Score newScore = new Score(gpActual.getGame(), gpActual.getPlayer(), 0.5, date);
-            if (gpActual.getGame().getScores().isEmpty()) {
+            if (!existsScore(newScore, gpActual.getGame())) {
                 scoreRepository.save(newScore);
             }
             return "TIE";
@@ -383,17 +389,33 @@ public class SalvoController {
 
     //Metodo para indicar numero de ships HUNDIDOS para verificar GAME OVER
     private int getSunkShips(GamePlayer gp) {
-        GamePlayer opp = getOpponent(gp);
+        GamePlayer opponent = getOpponent(gp);
         List<String> ships = new ArrayList<>();
         List<String> salvoes = new ArrayList<>();
         for (Ship ship : gp.getShips()) {
             ships.addAll(ship.getLocations());
         }
-        for (Salvo salvo : opp.getSalvoes()) {
+        for (Salvo salvo : opponent.getSalvoes()) {
             salvoes.addAll(salvo.getSalvoLocations());
         }
         ships.retainAll(salvoes);
         return ships.size();
+    }
+
+    //Metodo para ordenar salvoes
+    private List<Salvo> orderSalvoes(Set<Salvo> salvoes) {
+        return salvoes.stream().sorted(Comparator.comparing(Salvo::getTurn)).collect(Collectors.toList());
+    }
+
+    //Metodo para verificar si existen scores de un player en un game
+    private Boolean existsScore(Score score, Game game) {
+
+        Set<Score> scores = game.getScores();
+        for (Score score1 : scores) {
+            if (score.getPlayer().getUserName().equals(score1.getPlayer().getUserName()))
+                return true;
+        }
+        return false;
     }
 
 }
